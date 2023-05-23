@@ -3,13 +3,37 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
+import { useEffect, useState } from "react"
+import axios from "axios"
+
+axios.defaults.headers.common['Authorization'] = 'sI7b4Z8QE5opnAc5PF2Xgwuz';
 
 export default function App() {
+    const [homePageMovies,setHomePageMovies] = useState([]);
+
+    useEffect(()=> {
+        axios.get('https://mock-api.driven.com.br/api/v8/cineflex/movies')
+        .then(updateMovies)
+        .catch(()=> console.log("Deu ruim"));
+    },[])
+
+
+    function updateMovies(movies)
+    {
+        setHomePageMovies(movies.data);
+    }
+
+    function openMovie(movie)
+    {
+        console.log(movie);
+        //Abrir página de sessões de um filme
+    }
+
     return (
         <>
            <NavContainer>CINEFLEX</NavContainer>
 
-            <HomePage />
+            <HomePage openMovie={(m) => openMovie(m)} movies= {homePageMovies} />
             {/* <SeatsPage /> */}
             {/* <SessionsPage /> */}
             {/* <SuccessPage /> */}
