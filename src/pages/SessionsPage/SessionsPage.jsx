@@ -1,42 +1,44 @@
 import styled from "styled-components"
+import {GetOneMovie} from './../../requests.js'
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 export default function SessionsPage() {
 
+    const [movie,setCurrentLookingMovie] = useState(undefined);
+    const {movieId} = useParams();
+
+
+    useEffect(() => {
+
+        GetOneMovie(Number(movieId),setCurrentLookingMovie);
+
+    },[]);
+
     return (
         <PageContainer>
-            Selecione o horário
+            {movie ? <p>Selecione o horário</p> : <p>Carregando..</p>}
             <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
+                {movie && movie.days.map((day) => (<SessionContainer key={day.id}>
+                    {day.weekday + ' - ' + day.date}
                     <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
+                        {day.showtimes.map( (showtime) => 
+                        
+                        <Link key={showtime.id} to={`/assentos/${showtime.id}`}>
+                            <button>{showtime.name}</button>
+                        </Link>
+                        
+                        )}
                     </ButtonsContainer>
-                </SessionContainer>
-
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+                </SessionContainer>))}
             </div>
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={movie ? movie.posterURL : 'https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif'} alt="Carregando.." />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
+                    <p>{movie ? movie.title : 'Carregando..'}</p>
                 </div>
             </FooterContainer>
 
@@ -71,8 +73,16 @@ const ButtonsContainer = styled.div`
     display: flex;
     flex-direction: row;
     margin: 20px 0;
+    box-sizing: border-box;
     button {
         margin-right: 20px;
+        cursor: pointer;
+        box-sizing: border-box;
+        &:hover{
+            color: #E8833A;
+            border: 1px solid #E8833A;
+            background-color: white;
+        }
     }
     a {
         text-decoration: none;

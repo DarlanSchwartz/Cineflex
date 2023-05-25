@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components"
 export default function HomePage(props) {
 
-    const { movies , openMovie} = props;
+    const { movies} = props;
 
     return (
         <PageContainer>
@@ -9,9 +10,11 @@ export default function HomePage(props) {
 
             <ListContainer> 
                 {movies.length > 0 ? movies.map((movie) => 
-                <MovieContainer key={movie.id} onClick={() => props.openMovie(movie)} >
-                    <img src={movie.posterURL} alt="poster"/>
-                </MovieContainer>
+                <Link key={movie.id} to={`/sessoes/${movie.id}`}>
+                    <MovieContainer  >
+                        <img src={movie.posterURL} alt="poster"/>
+                    </MovieContainer>
+                </Link>
                 ): <p>Carregando..</p>}
             </ListContainer>
 
