@@ -11,7 +11,7 @@ import { GetAllMovies } from "./requests"
 
 export default function App() {
     const [homePageMovies,setHomePageMovies] = useState([]);
-
+    const [lastInfo,setLastInfo] = useState([]);
 
     useEffect(()=> {
         GetAllMovies(updateMovies);
@@ -30,8 +30,8 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<HomePage movies= {homePageMovies} />}></Route>
                     <Route path="/sessoes/:movieId" element={<SessionsPage/>}></Route>
-                    <Route path= "/assentos/:seatsId"  element={<SeatsPage />}></Route> 
-                    <Route path="/sucess/:movieId" element={<SuccessPage />}></Route>
+                    <Route path= "/assentos/:seatsId"  element={<SeatsPage set_info={setLastInfo} />}></Route> 
+                    <Route path="/sucesso" element={<SuccessPage inf={lastInfo} />}></Route>
                 </Routes>
 
             </BrowserRouter>

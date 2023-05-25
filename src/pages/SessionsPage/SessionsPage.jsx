@@ -77,6 +77,7 @@ const ButtonsContainer = styled.div`
     button {
         margin-right: 20px;
         cursor: pointer;
+        transition: all 200ms;
         box-sizing: border-box;
         &:hover{
             color: #E8833A;

@@ -24,3 +24,19 @@ export function GetAllMovies(callback)
     .then((response) => callback(response.data))
     .catch(()=> alert("Não foi possivel buscar os filmes no servidor"));
 }
+
+export function GetMovieSeats(id,callback)
+{
+    axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${id}/seats`)
+    .then(response => callback(response.data))
+    .catch( ()=> {
+        if(callback === undefined)
+            {
+                alert("É necessário ter uma função como parâmetro ao pedir os assentos de um filme para o servidor, parametros são: iddofilme, funcaoparaexecutar");
+            }
+            else
+            {
+                alert("Não foi possivel encontrar os assentos do filme com id: " + id + " no servidor!");
+            }
+    });
+}

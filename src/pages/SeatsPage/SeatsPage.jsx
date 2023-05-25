@@ -1,30 +1,61 @@
+import { useEffect, useState } from "react"
 import styled from "styled-components"
+import { GetMovieSeats } from "../../requests";
+import { useNavigate, useParams } from "react-router-dom";
+import Seat from "./Seat";
 
-export default function SeatsPage() {
+export default function SeatsPage(props) {
+
+    const [movieSeats, setMovieSeats] = useState([]);
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    const { seatsId } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+        GetMovieSeats(Number(seatsId), setMovieSeats);
+    }, []);
+
+    function updateSelectedSeats(id, add) {
+
+        if (add == true) 
+        {
+            setSelectedSeats([...selectedSeats, id]);
+        }
+        else {
+            const seats = [...selectedSeats];
+            const newSeats = [];
+
+            seats.forEach(seat => {
+                if (seat != id) {
+                    newSeats.push(seat);
+                }
+            });
+
+            setSelectedSeats(newSeats);
+        }
+    }
 
     return (
         <PageContainer>
-            Selecione o(s) assento(s)
-
+           {movieSeats.length == 0 ? 'Carregando assentos...' :  'Selecione o(s) assento(s)'}
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+                {movieSeats.length == 0 ? '': movieSeats.seats.map(seat => {
+                    return <Seat updt_seats={(seat,value) => updateSelectedSeats(seat,value)} key={seat.name} is_avaiable={seat.isAvailable} name={seat.name} />
+                })}
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle circle_color='rgb(26, 174, 158)' border_color='rgb(14, 125, 113)' />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle circle_color='rgb(195, 207, 217)' border_color='rgb(123, 139, 153)' />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle circle_color='rgb(251, 225, 146)' border_color='rgb(247, 197, 43)' />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -34,18 +65,18 @@ export default function SeatsPage() {
                 <input placeholder="Digite seu nome..." />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
+                <input placeholder="Digite seu CPF..." name="cpf" />
 
-                <button>Reservar Assento(s)</button>
+                <button onClick={() => {navigate('/sucesso');props.set_info(selectedSeats)} }>Reservar Assento(s)</button>
             </FormContainer>
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={movieSeats.length != 0 ? movieSeats.movie.posterURL : 'https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif'} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{movieSeats.length != 0 ? movieSeats.movie.title : 'Carregando...'}</p>
+                    <p>{movieSeats.length != 0 ? (movieSeats.day.weekday + ' - ' + movieSeats.name).replace(':', 'h') : ''}</p>
                 </div>
             </FooterContainer>
 
@@ -81,8 +112,18 @@ const FormContainer = styled.div`
     align-items: flex-start;
     margin: 20px 0;
     font-size: 18px;
+
     button {
         align-self: center;
+
+        &:hover{
+            color: #E8833A;
+            border: 1px solid #E8833A;
+            background-color: white;
+        }
+        cursor: pointer;
+
+        transition: all 200ms;
     }
     input {
         width: calc(100vw - 60px);
@@ -96,8 +137,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${props => props.border_color};         // Essa cor deve mudar
+    background-color: ${props => props.circle_color};    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -112,19 +153,7 @@ const CaptionItem = styled.div`
     align-items: center;
     font-size: 12px;
 `
-const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
+
 const FooterContainer = styled.div`
     width: 100%;
     height: 120px;

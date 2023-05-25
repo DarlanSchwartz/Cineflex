@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export default function SuccessPage() {
+export default function SuccessPage(props) {
 
     return (
         <PageContainer>
@@ -14,9 +14,7 @@ export default function SuccessPage() {
 
             <TextContainer>
                 <strong><p>Ingressos</p></strong>
-                <p>Assento 01</p>
-                <p>Assento 02</p>
-                <p>Assento 03</p>
+                {props.inf.map((i) => {return <p key={i} >Assento {i}</p>})}
             </TextContainer>
 
             <TextContainer>
