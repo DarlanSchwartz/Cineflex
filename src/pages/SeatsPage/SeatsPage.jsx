@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { GetMovieSeats , ReserveSeat  } from "../../requests";
+import loadingGif from '../../loading.gif'
 import { useNavigate, useParams } from "react-router-dom";
 import Seat from "./Seat";
 
@@ -70,7 +71,7 @@ export default function SeatsPage(props) {
 
     return (
         <PageContainer>
-            {movieSeats.length == 0 ? 'Carregando assentos...' : 'Selecione o(s) assento(s)'}
+            {movieSeats.length == 0 ? <img className="loading-gif" src={loadingGif}/> : 'Selecione o(s) assento(s)'}
             <SeatsContainer>
                 {movieSeats.length == 0 ? '' : movieSeats.seats.map(seat => {
                     return <Seat updt_seats={(seat, value) => updateSelectedSeats(seat, value)} key={seat.name} is_avaiable={seat.isAvailable} name={seat.name} id={seat.id} />
@@ -146,7 +147,7 @@ export default function SeatsPage(props) {
 
             <FooterContainer data-test="footer">
                 <div>
-                    <img src={movieSeats.length != 0 ? movieSeats.movie.posterURL : 'https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif'} alt="poster" />
+                    { movieSeats.length != 0 ? <img src={movieSeats.movie.posterURL} alt="poster" /> : <img className="loading-gif" src={loadingGif}/>}
                 </div>
                 <div>
                     <p>{movieSeats.length != 0 ? movieSeats.movie.title : 'Carregando...'}</p>
@@ -169,6 +170,11 @@ const PageContainer = styled.div`
     margin-top: 30px;
     padding-bottom: 120px;
     padding-top: 70px;
+
+    .loading-gif{
+        width: 300px;
+        height: 300px;
+    }
 `
 const SeatsContainer = styled.div`
     width: 330px;
@@ -239,6 +245,8 @@ const FooterContainer = styled.div`
     position: fixed;
     bottom: 0;
 
+    
+
     div:nth-child(1) {
         box-shadow: 0px 2px 4px 2px #0000001A;
         border-radius: 3px;
@@ -247,10 +255,17 @@ const FooterContainer = styled.div`
         justify-content: center;
         background-color: white;
         margin: 12px;
+
+        .loading-gif{
+            width: 30px;
+            object-fit:contain;
+        }
+
         img {
             width: 50px;
             height: 70px;
             padding: 8px;
+            object-fit: cover;
         }
     }
 

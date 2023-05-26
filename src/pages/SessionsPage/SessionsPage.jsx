@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import {GetOneMovie} from './../../requests.js'
+import loadingGif from '../../loading.gif'
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -23,7 +24,7 @@ export default function SessionsPage() {
 
     return (
         <PageContainer>
-            {movie ? <p>Selecione o horário</p> : <p>Carregando..</p>}
+            {movie ? <p>Selecione o horário</p> : <img className="loading-gif" src={loadingGif}/>}
             <div>
                 {movie && movie.days.map((day) => (<SessionContainer data-test="movie-day" key={day.id}>
                     {day.weekday + ' - ' + day.date}
@@ -39,7 +40,7 @@ export default function SessionsPage() {
 
             <FooterContainer data-test="footer">
                 <div >
-                    <img src={movie ? movie.posterURL : 'https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif'} alt="Carregando.." />
+                    { movie ? <img src={movie.posterURL} alt="poster" /> : <img className="loading-gif-mini" src={loadingGif}/>}
                 </div>
                 <div>
                     <p>{movie ? movie.title : 'Carregando..'}</p>
@@ -64,6 +65,15 @@ const PageContainer = styled.div`
     div {
         margin-top: 20px;
         box-sizing: border-box;
+    }
+
+    .loading-gif{
+        width: 300px;
+        height: 300px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
 `
 const SessionContainer = styled.div`
@@ -111,10 +121,17 @@ const FooterContainer = styled.div`
         justify-content: center;
         background-color: white;
         margin: 12px;
+
+        .loading-gif-mini{
+            width: 30px;
+            object-fit: contain;
+        }
+
         img {
             width: 50px;
             height: 70px;
             padding: 8px;
+            object-fit: cover;
         }
     }
 

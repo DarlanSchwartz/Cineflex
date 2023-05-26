@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components"
+import loadingGif from '../../loading.gif'
 export default function HomePage(props) {
 
     const { movies} = props;
@@ -15,7 +16,7 @@ export default function HomePage(props) {
                         <img src={movie.posterURL} alt="poster"/>
                     </MovieContainer>
                 </Link>
-                ): <p>Carregando..</p>}
+                ): <img className="loading-gif" src={loadingGif}/>}
             </ListContainer>
 
         </PageContainer>
@@ -47,6 +48,15 @@ const ListContainer = styled.div`
         left: 50%;
         top: 50%;
         transform: translateX(-50%) translateY(-50%);
+    }
+
+    .loading-gif{
+        width: 300px;
+        height: 300px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
 `
 const MovieContainer = styled.div`
