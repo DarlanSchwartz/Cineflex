@@ -32,8 +32,8 @@ export default function SessionsPage() {
                 </SessionContainer>))}
             </div>
 
-            <FooterContainer data-test="footer">
-                <div>
+            <FooterContainer >
+                <div data-test="footer">
                     <img src={movie ? movie.posterURL : 'https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif'} alt="Carregando.." />
                 </div>
                 <div>
@@ -54,9 +54,11 @@ const PageContainer = styled.div`
     color: #293845;
     margin-top: 30px;
     padding-bottom: 120px;
+    box-sizing: border-box;
     padding-top: 70px;
     div {
         margin-top: 20px;
+        box-sizing: border-box;
     }
 `
 const SessionContainer = styled.div`
@@ -83,9 +85,6 @@ const ButtonsContainer = styled.div`
             border: 1px solid #E8833A;
             background-color: white;
         }
-    }
-    a {
-        text-decoration: none;
     }
 `
 const FooterContainer = styled.div`

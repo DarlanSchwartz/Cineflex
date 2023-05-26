@@ -140,7 +140,7 @@ export default function SeatsPage(props) {
             </FormContainer>
 
             <FooterContainer>
-                <div>
+                <div data-test="footer">
                     <img src={movieSeats.length != 0 ? movieSeats.movie.posterURL : 'https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif'} alt="poster" />
                 </div>
                 <div>
