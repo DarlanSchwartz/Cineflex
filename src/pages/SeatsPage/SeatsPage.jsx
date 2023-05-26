@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { GetMovieSeats } from "../../requests";
+import { GetMovieSeats , ReserveSeat  } from "../../requests";
 import { useNavigate, useParams } from "react-router-dom";
 import Seat from "./Seat";
 
@@ -8,6 +8,8 @@ export default function SeatsPage(props) {
 
     const [movieSeats, setMovieSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
+    const [userCpf, setUserCpf] = useState('');
+    const [userName, setUserName] = useState('');
     const { seatsId } = useParams();
     const navigate = useNavigate();
 
@@ -16,32 +18,57 @@ export default function SeatsPage(props) {
         GetMovieSeats(Number(seatsId), setMovieSeats);
     }, []);
 
-    function updateSelectedSeats(id, add) {
+    function updateSelectedSeats(seatObj, add) {
 
-        if (add == true) 
-        {
-            setSelectedSeats([...selectedSeats, id]);
+        if (add == true) {
+            setSelectedSeats([...selectedSeats, seatObj]);
         }
         else {
             const seats = [...selectedSeats];
             const newSeats = [];
 
             seats.forEach(seat => {
-                if (seat != id) {
+                if (seat.id != seatObj.id) {
                     newSeats.push(seat);
                 }
             });
+
+            
 
             setSelectedSeats(newSeats);
         }
     }
 
+    function formatarCPF(value) {
+        // Remover caracteres não numéricos
+        var cpf = value.replace(/\D/g, '');
+  
+        // Verificar se o CPF está vazio
+        if (cpf === '') {
+          return cpf;
+        }
+  
+        // Adicionar a formatação conforme o CPF é digitado
+        if (cpf.length > 3) {
+          cpf = cpf.substring(0, 3) + '.' + cpf.substring(3);
+        }
+        if (cpf.length > 7) {
+          cpf = cpf.substring(0, 7) + '.' + cpf.substring(7);
+        }
+        if (cpf.length > 11) {
+          cpf = cpf.substring(0, 11) + '-' + cpf.substring(11);
+        }
+  
+        // Atualizar o valor do campo de entrada
+         return cpf;
+      }
+
     return (
         <PageContainer>
-           {movieSeats.length == 0 ? 'Carregando assentos...' :  'Selecione o(s) assento(s)'}
+            {movieSeats.length == 0 ? 'Carregando assentos...' : 'Selecione o(s) assento(s)'}
             <SeatsContainer>
-                {movieSeats.length == 0 ? '': movieSeats.seats.map(seat => {
-                    return <Seat updt_seats={(seat,value) => updateSelectedSeats(seat,value)} key={seat.name} is_avaiable={seat.isAvailable} name={seat.name} />
+                {movieSeats.length == 0 ? '' : movieSeats.seats.map(seat => {
+                    return <Seat data-test="seat" updt_seats={(seat, value) => updateSelectedSeats(seat, value)} key={seat.name} is_avaiable={seat.isAvailable} name={seat.name} id={seat.id} />
                 })}
             </SeatsContainer>
 
@@ -60,14 +87,56 @@ export default function SeatsPage(props) {
                 </CaptionItem>
             </CaptionContainer>
 
-            <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+            <FormContainer onSubmit={(e) => {
+                
 
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." name="cpf" />
+                    if(userCpf == '' || userName == '' || userCpf.length < 11)
+                    {
+                        e.preventDefault();
+                        return;
+                    }
 
-                <button onClick={() => {navigate('/sucesso');props.set_info(selectedSeats)} }>Reservar Assento(s)</button>
+                    if(userName.trim().length === 0)
+                    {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    props.set_info(
+                        {
+                            seats: selectedSeats,
+                            title: movieSeats.movie.title,
+                            cpf: userCpf, 
+                            username: userName,
+                            date: movieSeats.day.date,
+                            time: movieSeats.name
+                        });
+
+                    
+                    let seatIds = [];
+                    let finalcpf =  userCpf.replace(/[.-]/g, "");
+
+                    selectedSeats.forEach(seat => {
+                        seatIds.push(seat.id);
+                    });
+                    
+                    const obj = {
+                            ids: seatIds,
+                            name: userName,
+                            cpf:finalcpf
+                    };
+
+                    e.preventDefault();
+
+                    ReserveSeat(obj,() => navigate('/sucesso'));
+                }}>
+                <label htmlFor="nome">Nome do Comprador:</label>
+                <input data-test="client-name" type="text" pattern="^\s*\S.*$" required placeholder="Digite seu nome..." id="nome" name="nome" value={userName}  onChange={(e) => setUserName(e.target.value)} />
+
+                <label htmlFor="cpf">CPF do Comprador:</label>
+                <input data-test="client-cpf" pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" required placeholder="Digite seu CPF..." id="cpf" name="cpf" value={formatarCPF(userCpf)} onChange={(e) => setUserCpf(e.target.value.length < 14 ? e.target.value : e.target.value.substring(0,14))} />
+
+                <button type="submit">Reservar Assento(s)</button>
             </FormContainer>
 
             <FooterContainer>
@@ -105,7 +174,7 @@ const SeatsContainer = styled.div`
     justify-content: center;
     margin-top: 20px;
 `
-const FormContainer = styled.div`
+const FormContainer = styled.form`
     width: calc(100vw - 40px); 
     display: flex;
     flex-direction: column;

@@ -11,7 +11,7 @@ export default function HomePage(props) {
             <ListContainer> 
                 {movies.length > 0 ? movies.map((movie) => 
                 <Link key={movie.id} to={`/sessoes/${movie.id}`}>
-                    <MovieContainer  >
+                    <MovieContainer data-test="movie"  >
                         <img src={movie.posterURL} alt="poster"/>
                     </MovieContainer>
                 </Link>

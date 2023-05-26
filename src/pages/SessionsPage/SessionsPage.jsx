@@ -1,12 +1,13 @@
 import styled from "styled-components"
 import {GetOneMovie} from './../../requests.js'
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function SessionsPage() {
 
     const [movie,setCurrentLookingMovie] = useState(undefined);
     const {movieId} = useParams();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -19,21 +20,19 @@ export default function SessionsPage() {
         <PageContainer>
             {movie ? <p>Selecione o horário</p> : <p>Carregando..</p>}
             <div>
-                {movie && movie.days.map((day) => (<SessionContainer key={day.id}>
+                {movie && movie.days.map((day) => (<SessionContainer data-test="movie-day" key={day.id}>
                     {day.weekday + ' - ' + day.date}
                     <ButtonsContainer>
                         {day.showtimes.map( (showtime) => 
-                        
-                        <Link key={showtime.id} to={`/assentos/${showtime.id}`}>
-                            <button>{showtime.name}</button>
-                        </Link>
+                    
+                            <button data-test="showtime" key={showtime.id} onClick={() => navigate(`/assentos/${showtime.id}`)}>{showtime.name}</button>
                         
                         )}
                     </ButtonsContainer>
                 </SessionContainer>))}
             </div>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={movie ? movie.posterURL : 'https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif'} alt="Carregando.." />
                 </div>

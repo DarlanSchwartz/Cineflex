@@ -24,7 +24,7 @@ const SeatItem = styled.div`
 
 export default function Seat(props)
 {
-    const {is_avaiable,name} = props;
+    const {is_avaiable,name,id} = props;
     const [selected,setSelected] = useState(false);
     let my_color = selected ? 'rgb(26, 174, 158)' : is_avaiable ? '#C3CFD9' : '#FBE192';
     let my_border_color = selected ? 'rgb(14, 125, 113)' : is_avaiable ? 'rgb(123, 139, 153)' : 'rgb(247, 197, 43)';
@@ -41,12 +41,12 @@ export default function Seat(props)
 
         if(!selected)
         {
-            props.updt_seats(name,true);
+            props.updt_seats({name:name,id:id},true);
             // adiciona esse assento a array de assentos selecionados
         }
         else
         {
-            props.updt_seats(name,false);
+            props.updt_seats({name:name,id:id},false);
 
             // remove esse assento a array de assentos selecionados
         }

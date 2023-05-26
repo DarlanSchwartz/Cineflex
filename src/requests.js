@@ -40,3 +40,19 @@ export function GetMovieSeats(id,callback)
             }
     });
 }
+
+export function ReserveSeat(obj,callback)
+{
+    axios.post(`https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`,obj)
+    .then(() => {callback(); console.log})
+    .catch( ()=> {
+        if(callback === undefined)
+            {
+                alert("É necessário ter uma função como parâmetro ao reservar assentos de um filme para o servidor");
+            }
+            else
+            {
+                alert("Não foi possivel reservar estes assentos no servidor!");
+            }
+    });
+}
