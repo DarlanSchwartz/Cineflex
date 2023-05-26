@@ -68,7 +68,7 @@ export default function SeatsPage(props) {
             {movieSeats.length == 0 ? 'Carregando assentos...' : 'Selecione o(s) assento(s)'}
             <SeatsContainer>
                 {movieSeats.length == 0 ? '' : movieSeats.seats.map(seat => {
-                    return <Seat data-test="seat" updt_seats={(seat, value) => updateSelectedSeats(seat, value)} key={seat.name} is_avaiable={seat.isAvailable} name={seat.name} id={seat.id} />
+                    return <Seat updt_seats={(seat, value) => updateSelectedSeats(seat, value)} key={seat.name} is_avaiable={seat.isAvailable} name={seat.name} id={seat.id} />
                 })}
             </SeatsContainer>
 
@@ -136,7 +136,7 @@ export default function SeatsPage(props) {
                 <label htmlFor="cpf">CPF do Comprador:</label>
                 <input data-test="client-cpf" pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" required placeholder="Digite seu CPF..." id="cpf" name="cpf" value={formatarCPF(userCpf)} onChange={(e) => setUserCpf(e.target.value.length < 14 ? e.target.value : e.target.value.substring(0,14))} />
 
-                <button type="submit">Reservar Assento(s)</button>
+                <button data-test="book-seat-btn" type="submit">Reservar Assento(s)</button>
             </FormContainer>
 
             <FooterContainer>

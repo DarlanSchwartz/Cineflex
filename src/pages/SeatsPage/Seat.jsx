@@ -55,7 +55,7 @@ export default function Seat(props)
     }
     
     return(
-        <SeatItem onClick={selectSeat} my_border_color = {my_border_color} seat_color={my_color}>{name}</SeatItem>
+        <SeatItem data-test="seat" onClick={selectSeat} my_border_color = {my_border_color} seat_color={my_color}>{name}</SeatItem>
     );
 
 
