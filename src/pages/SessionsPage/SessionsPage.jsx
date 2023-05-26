@@ -16,6 +16,11 @@ export default function SessionsPage() {
 
     },[]);
 
+    if(movie != undefined && movie.code == "ERR_BAD_REQUEST")
+    {
+        navigate('/error',{state:`${movie.response.status},${movie.response.statusText}`});
+    }
+
     return (
         <PageContainer>
             {movie ? <p>Selecione o horário</p> : <p>Carregando..</p>}

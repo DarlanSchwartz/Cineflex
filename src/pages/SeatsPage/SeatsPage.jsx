@@ -18,6 +18,11 @@ export default function SeatsPage(props) {
         GetMovieSeats(Number(seatsId), setMovieSeats);
     }, []);
 
+    if(movieSeats != undefined && movieSeats.code == "ERR_BAD_REQUEST")
+    {
+        navigate('/error',{state:`${movieSeats.response.status},${movieSeats.response.statusText}`});
+    }
+
     function updateSelectedSeats(seatObj, add) {
 
         if (add == true) {

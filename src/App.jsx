@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
+import ErrorPage from "./pages/ErrorPage/ErrorPage"
 import { useEffect, useState } from "react"
 import {Routes, Route, useNavigate,useLocation } from "react-router-dom";
 import { GetAllMovies } from "./requests"
@@ -25,6 +26,11 @@ export default function App() {
         setHomePageMovies(movies);
     }
 
+    if(sucessInfo != undefined && sucessInfo.code == "ERR_BAD_REQUEST")
+    {
+        navigate('/error',{state:`${sucessInfo.response.status},${sucessInfo.response.statusText}`});
+    }
+
     return (
         <>
             <NavContainer>
@@ -34,14 +40,17 @@ export default function App() {
             </NavContainer>
             
                 <Routes>
+                    <Route path="*" element={<ErrorPage />} />
                     <Route path="/" element={<HomePage movies= {homePageMovies} />}></Route>
                     <Route path="/sessoes/:movieId" element={<SessionsPage/>}></Route>
                     <Route path= "/assentos/:seatsId"  element={<SeatsPage set_info={setsucessInfo} />}></Route> 
                     <Route path="/sucesso" element={<SuccessPage sucess_info={sucessInfo} />}></Route>
+                    <Route path="/error" element={<ErrorPage/>}></Route>
                 </Routes>
         </>
     )
 }
+
 
 const NavContainer = styled.div`
     width: 100%;
