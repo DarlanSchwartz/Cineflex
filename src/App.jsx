@@ -4,14 +4,17 @@ import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import { useEffect, useState } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {Routes, Route, useNavigate,useLocation } from "react-router-dom";
 import { GetAllMovies } from "./requests"
+import arrow from './Arrow.svg'
 
 
 
 export default function App() {
     const [homePageMovies,setHomePageMovies] = useState([]);
     const [sucessInfo,setsucessInfo] = useState([]);
+    const navigate= useNavigate();
+    let currentLocation = useLocation();
 
     useEffect(()=> {
         GetAllMovies(updateMovies);
@@ -24,8 +27,11 @@ export default function App() {
 
     return (
         <>
-            <BrowserRouter>
-            <NavContainer>CINEFLEX</NavContainer>
+            <NavContainer>
+                CINEFLEX
+                {currentLocation.pathname != "/" &&  <img data-test="go-home-header-btn" onClick={()=>navigate(-1)} src={arrow}/>}
+
+            </NavContainer>
             
                 <Routes>
                     <Route path="/" element={<HomePage movies= {homePageMovies} />}></Route>
@@ -33,8 +39,6 @@ export default function App() {
                     <Route path= "/assentos/:seatsId"  element={<SeatsPage set_info={setsucessInfo} />}></Route> 
                     <Route path="/sucesso" element={<SuccessPage sucess_info={sucessInfo} />}></Route>
                 </Routes>
-
-            </BrowserRouter>
         </>
     )
 }
@@ -54,5 +58,13 @@ const NavContainer = styled.div`
     a {
         text-decoration: none;
         color: #E8833A;
+    }
+
+    img{
+        position:fixed; 
+        left:10px; 
+        top:20px; 
+        cursor:pointer;
+         z-index:2;
     }
 `
