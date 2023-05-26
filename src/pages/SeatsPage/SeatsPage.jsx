@@ -145,7 +145,7 @@ export default function SeatsPage(props) {
                 </div>
                 <div>
                     <p>{movieSeats.length != 0 ? movieSeats.movie.title : 'Carregando...'}</p>
-                    <p>{movieSeats.length != 0 ? (movieSeats.day.weekday + ' - ' + movieSeats.name).replace(':', 'h') : ''}</p>
+                    <p>{movieSeats.length != 0 ? (movieSeats.day.weekday + ' - ' + movieSeats.name) : ''}</p>
                 </div>
             </FooterContainer>
 
