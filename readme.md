@@ -1,10 +1,10 @@
 # Cineflex
 
-<img src="https://raw.githubusercontent.com/DarlanSchwartz/Cineflex/86ff79dcecf6888b828a283947e025f6bfd0ae25/src/favicon.svg" width='50px' align='right'>
+[<img src="https://raw.githubusercontent.com/DarlanSchwartz/Cineflex/86ff79dcecf6888b828a283947e025f6bfd0ae25/src/favicon.svg" width='50px' align='right'>](https://projeto10-cineflex-eight-sigma.vercel.app/)
 
 A web application for booking movie tickets. 
 
-[Go to website](https://projeto10-cineflex-eight-sigma.vercel.app/)
+[Go to website](https://cineflex-git-main-darlanschwartz.vercel.app/)
 
 
 
@@ -12,7 +12,7 @@ A web application for booking movie tickets.
 
 Cineflex is a web-based platform that allows users to browse and book movie tickets. It provides information about upcoming movies, showtimes, theaters, and seat availability. Users can select their preferred movie, theater, and seats, and proceed to the booking and payment process.
 
-<img src="https://raw.githubusercontent.com/DarlanSchwartz/Cineflex/main/screenshot.png" width='300px' align='right'>
+[<img src="https://raw.githubusercontent.com/DarlanSchwartz/Cineflex/main/screenshot.png" width='300px' align='right'>](https://cineflex-git-main-darlanschwartz.vercel.app/)
 
 ## Prerequisites
 
