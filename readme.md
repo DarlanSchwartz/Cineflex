@@ -12,6 +12,8 @@ A web application for booking movie tickets.
 
 Cineflex is a web-based platform that allows users to browse and book movie tickets. It provides information about upcoming movies, showtimes, theaters, and seat availability. Users can select their preferred movie, theater, and seats, and proceed to the booking and payment process.
 
+<img src="https://raw.githubusercontent.com/DarlanSchwartz/Cineflex/main/screenshot.png" width='300px' align='right'>
+
 ## Prerequisites
 
 - Node.js
