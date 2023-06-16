@@ -1,8 +1,11 @@
 # Cineflex
 
+<img src="https://raw.githubusercontent.com/DarlanSchwartz/Cineflex/86ff79dcecf6888b828a283947e025f6bfd0ae25/src/favicon.svg" width='50px' align='right'>
+
 A web application for booking movie tickets. 
 
 [Go to website](https://projeto10-cineflex-eight-sigma.vercel.app/)
+
 
 
 ## Overview
